@@ -107,6 +107,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
             xbmc.Player().stop()
         xbmc.sleep(1000)        
         xbmc.Player().play(url, 0, 1)
+        self.channel = pos
         return self.current_label 
 
     def fetch_channels(self):
@@ -140,8 +141,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
                                     current_channel = self.channel, tune = self.tune)
                 ui.doModal()
                 self.getControl(120).selectItem(ui.current_pos)
-                del ui
-            self.channel = pos                    
+                del ui                    
         elif controlId == 110:
             self.fetch_channels()
             
