@@ -26,7 +26,8 @@ class PLAYER( xbmcgui.WindowXMLDialog ):
                 self.current = self.tune(pos)
                 self.getControl( 206 ).setLabel( self.current )
                 self.current_pos = pos
-
+        elif controlId == 601:
+            self.close() # close player window when we stop the stream
     def onFocus( self, controlId ):
         pass
 
