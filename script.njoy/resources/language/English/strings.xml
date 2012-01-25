@@ -3,8 +3,11 @@
 
   <!-- Script -->
 
+    <string id="666">Working...</string>
     <string id="667">Refresh List</string>
     <string id="668">Find Tuner</string>
+    <string id="669">Active Tuner:</string>
+    <string id="670">Current Channel:</string>
     <string id="30100">To use this app and watch live television</string>
     <string id="30101">you need an Anysee N7 Tuner.</string>
     <string id="30102">Do you have this tuner and is it setup correctly?</string>
