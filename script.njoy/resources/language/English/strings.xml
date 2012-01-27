@@ -27,6 +27,7 @@
     <string id="30116">Could not get Channel List, try to setup the tuner again</string>
     <string id="30117">No N7 tuner found during the scan.</string>
     <string id="30118">Continue</string>
-
-
+    <string id="30119">Wait time between zaps</string>
+    <string id="30120">General</string>
+    <string id="30121">Please wait %i seconds between zaps</string>
 </strings>

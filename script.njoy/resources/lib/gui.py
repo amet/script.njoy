@@ -6,6 +6,7 @@ import xbmcgui
 import api
 from threading import Thread
 import traceback
+from datetime import datetime
 
 ## A lot of the code borrowed from http://tv.i-njoy.eu/repo/ , all credit to them
 
@@ -28,9 +29,11 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.channel       = -1
         self.items         = []
         self.current_label = ""
+        self.timestamp     = None
         
     def onInit( self ):
         if self.setup():
+            self.zap_wait = int(__addon__.getSetting("timeout"))
             self.fetch_channels()
             self.epg = _EPG(window = self.getControl)
             self.epg.start()
@@ -68,7 +71,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
             if scanner.run():
                 dialog = xbmcgui.Dialog()
                 if len(scanner.n7) > 1:
-                    n7 = dialog.select(_(30106), scanner.n7)
+                    pos = dialog.select(_(30106), scanner.n7)
+                    n7  = scanner.n7[pos]         
                 else:
                     n7 = scanner.n7[0]
                     txt = _(30112) % n7
@@ -107,12 +111,14 @@ class GUI( xbmcgui.WindowXMLDialog ):
             xbmc.Player().stop()
         xbmc.sleep(1000)        
         xbmc.Player().play(url, 0, 1)
+        self.timestamp = datetime.now()
         self.channel = pos
         return self.current_label 
 
     def fetch_channels(self):
         """get channel list"""
         self.getControl(150).setVisible(True)
+        self.getControl( 120 ).reset()
         if self.tuner:
             items = api.channel_list(self.tuner)
             self.items = items
@@ -133,7 +139,12 @@ class GUI( xbmcgui.WindowXMLDialog ):
         if controlId == 120:
             pos = self.getControl(120).getSelectedPosition()
             if pos != self.channel:
-                self.tune(pos)
+                if (self.timestamp == None) or ((datetime.now() - self.timestamp).seconds > self.zap_wait):
+                    self.tune(pos)
+                else:
+                    time =  _(30121) % (self.zap_wait - (datetime.now() - self.timestamp).seconds)
+                    xbmc.executebuiltin("Notification(%s,%s,2)" % 
+                                           (__scriptname__ , time))    
             else:
                 import player
                 ui = player.PLAYER( "script-njoy-player.xml" , __cwd__ , "Default",
