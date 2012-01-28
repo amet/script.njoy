@@ -6,7 +6,6 @@ import xbmcgui
 import api
 from threading import Thread
 import traceback
-from datetime import datetime
 
 ## A lot of the code borrowed from http://tv.i-njoy.eu/repo/ , all credit to them
 
@@ -29,11 +28,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.channel       = -1
         self.items         = []
         self.current_label = ""
-        self.timestamp     = None
         
     def onInit( self ):
         if self.setup():
-            self.zap_wait = int(__addon__.getSetting("timeout"))
             self.fetch_channels()
             self.epg = _EPG(window = self.getControl)
             self.epg.start()
@@ -109,9 +106,8 @@ class GUI( xbmcgui.WindowXMLDialog ):
         self.getControl( 206 ).setLabel( self.current_label )
         if xbmc.Player().isPlaying():
             xbmc.Player().stop()
-        xbmc.sleep(1000)        
-        xbmc.Player().play(url, 0, 1)
-        self.timestamp = datetime.now()
+        xbmc.sleep(2000)        
+        xbmc.Player(xbmc.PLAYER_CORE_DVDPLAYER).play(url, 0, 1)
         self.channel = pos
         return self.current_label 
 
@@ -139,12 +135,7 @@ class GUI( xbmcgui.WindowXMLDialog ):
         if controlId == 120:
             pos = self.getControl(120).getSelectedPosition()
             if pos != self.channel:
-                if (self.timestamp == None) or ((datetime.now() - self.timestamp).seconds > self.zap_wait):
-                    self.tune(pos)
-                else:
-                    time =  _(30121) % (self.zap_wait - (datetime.now() - self.timestamp).seconds)
-                    xbmc.executebuiltin("Notification(%s,%s,2)" % 
-                                           (__scriptname__ , time))    
+                self.tune(pos)
             else:
                 import player
                 ui = player.PLAYER( "script-njoy-player.xml" , __cwd__ , "Default",
