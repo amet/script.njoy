@@ -10,7 +10,6 @@ class PLAYER( xbmcgui.WindowXMLDialog ):
         self.tune         = kwargs['tune']
       
     def onInit( self ):
-        print "onInit"
         for item in self.channel_list:
             listitem = xbmcgui.ListItem( label=item['title'], thumbnailImage=item['thumb'] )
             listitem.setProperty( "thumb", item['thumb'] )
