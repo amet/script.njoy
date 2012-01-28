@@ -74,7 +74,7 @@
 			<onup>120</onup>
 			<onleft>110</onleft>
 			<scrolltime>200</scrolltime>
-			<visible>!Control.isVisible(150)</visible>
+<!--			<visible>!Control.isVisible(150)</visible> -->
 			<orientation>vertical</orientation>
 			<viewtype label="535">list</viewtype>
 			<preloaditems>2</preloaditems>

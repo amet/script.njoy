@@ -88,7 +88,6 @@ class GUI( xbmcgui.WindowXMLDialog ):
         if api.request(n7, api.DISCOVER, True):
             __addon__.setSetting("N7", n7)
             txt = _(30112) % n7
-            xbmc.executebuiltin("Notification(%s,%s,2)" % (__scriptname__ , txt))
             self.tuner = n7
             self.getControl( 205 ).setLabel( n7 )
             log("N7 tuner manually entered: %s" % n7)
@@ -100,14 +99,16 @@ class GUI( xbmcgui.WindowXMLDialog ):
             self.close()
 
     def tune(self,pos):
+        self.getControl(150).setVisible(True)
         focus   = self.getControl(120).getListItem(pos)
         url   = focus.getProperty("url")
         self.current_label = focus.getLabel()
         self.getControl( 206 ).setLabel( self.current_label )
         if xbmc.Player().isPlaying():
             xbmc.Player().stop()
-        xbmc.sleep(2000)        
+        xbmc.sleep(1000)        
         xbmc.Player(xbmc.PLAYER_CORE_DVDPLAYER).play(url, 0, 1)
+        self.getControl(150).setVisible(False)
         self.channel = pos
         return self.current_label 
 
