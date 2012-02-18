@@ -101,12 +101,12 @@ class GUI( xbmcgui.WindowXMLDialog ):
     def tune(self,pos):
         self.getControl(150).setVisible(True)
         focus   = self.getControl(120).getListItem(pos)
-        url   = focus.getProperty("url")
+        url     = focus.getProperty("url")
         self.current_label = focus.getLabel()
         self.getControl( 206 ).setLabel( self.current_label )
         if xbmc.Player().isPlaying():
             xbmc.Player().stop()
-        xbmc.sleep(1000)        
+        xbmc.sleep(3000)        
         xbmc.Player(xbmc.PLAYER_CORE_DVDPLAYER).play(url, 0, 1)
         self.getControl(150).setVisible(False)
         self.channel = pos
@@ -158,9 +158,9 @@ class GUI( xbmcgui.WindowXMLDialog ):
 
     def onAction( self, action ):
         if ( action.getId() in CANCEL_DIALOG):
-          self.epg.stop()
-          xbmc.Player().stop()
-          self.close()
+            self.epg.stop()
+            xbmc.Player().stop()
+            self.close()
 
 class _EPG(Thread):
     """init epg class"""
